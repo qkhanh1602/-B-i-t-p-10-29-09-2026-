@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>Trang chủ</title>
+</head>
+<body>
+<main layout:fragment="content" class="container">
+    <div class="panel">
+        <h1>Trang chủ UTEShop</h1>
+        <p>
+            Xin chào <strong th:text="${#authentication.principal.fullName}">User</strong>
+        </p>
+        <p>
+            Chào mừng bạn đến với hệ thống quản trị và bán hàng. Bạn đã đăng nhập thành công với vai trò:
+            <span class="btn small secondary" th:text="${#authentication.principal.role}">ROLE_USER</span>
+        </p>
+    </div>
+</main>
+</body>
+</html>
