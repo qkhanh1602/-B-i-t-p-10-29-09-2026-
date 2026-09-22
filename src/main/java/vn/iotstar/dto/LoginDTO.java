@@ -3,8 +3,8 @@ package vn.iotstar.dto;
 import jakarta.validation.constraints.NotBlank;
 
 public class LoginDTO {
-    @NotBlank(message = "Username hoặc email không được để trống")
-    private String login;
+    @NotBlank(message = "Username không được để trống")
+    private String username;
 
     @NotBlank(message = "Password không được để trống")
     private String password;
@@ -12,17 +12,17 @@ public class LoginDTO {
     public LoginDTO() {
     }
 
-    public LoginDTO(String login, String password) {
-        this.login = login;
+    public LoginDTO(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 
-    public String getLogin() {
-        return login;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

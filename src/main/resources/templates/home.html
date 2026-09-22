@@ -1,23 +1,26 @@
 <!DOCTYPE html>
-<html lang="vi"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout}">
-<head>
-    <title>Trang chủ</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layouts/layout :: head('Dashboard')}"></head>
 <body>
-<main layout:fragment="content" class="container">
-    <div class="panel">
-        <h1>Trang chủ UTEShop</h1>
-        <p>
-            Xin chào <strong th:text="${#authentication.principal.fullName}">User</strong>
-        </p>
-        <p>
-            Chào mừng bạn đến với hệ thống quản trị và bán hàng. Bạn đã đăng nhập thành công với vai trò:
-            <span class="btn small secondary" th:text="${#authentication.principal.role}">ROLE_USER</span>
-        </p>
+<div th:replace="~{layouts/layout :: page(~{::main})}">
+<main>
+    <h1>Dashboard</h1>
+    <div th:if="${success}" class="alert success" th:text="${success}"></div>
+    <div class="cards">
+        <div class="card">
+            <h3>Total Users</h3>
+            <strong th:text="${userCount}">0</strong>
+        </div>
+        <div class="card">
+            <h3>Total Products</h3>
+            <strong th:text="${productCount}">0</strong>
+        </div>
+    </div>
+    <div class="quick-links">
+        <a class="button" th:href="@{/products}">Quản lý Products</a>
+        <a class="button" th:if="${#authorization.expression('hasRole(''ADMIN'')')}" th:href="@{/users}">Quản lý Users</a>
     </div>
 </main>
+</div>
 </body>
 </html>

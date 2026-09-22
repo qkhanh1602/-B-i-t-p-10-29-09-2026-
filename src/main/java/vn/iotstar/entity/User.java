@@ -1,13 +1,15 @@
 package vn.iotstar.entity;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(
     name = "users",
-    uniqueConstraints = {
-        @UniqueConstraint(name = "uk_users_username", columnNames = "username"),
-        @UniqueConstraint(name = "uk_users_email", columnNames = "email")
+    indexes = {
+        @Index(name = "idx_users_username", columnList = "username"),
+        @Index(name = "idx_users_email", columnList = "email")
     }
 )
 public class User {
@@ -24,23 +26,26 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(name = "full_name", length = 150, columnDefinition = "nvarchar(200)")
+    @Column(columnDefinition = "nvarchar(500)")
     private String fullName;
 
     @Column(length = 500)
     private String images;
 
     @Column(nullable = false)
-    private boolean enabled = true;
+    private boolean enabled = false;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Product> products = new ArrayList<>();
 
     public User() {
     }
 
-    public User(Long id, String username, String email, String password, String fullName, String images, boolean enabled, Role role) {
+    public User(Long id, String username, String email, String password, String fullName, String images, boolean enabled, Role role, List<Product> products) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -49,6 +54,7 @@ public class User {
         this.images = images;
         this.enabled = enabled;
         this.role = role;
+        this.products = products != null ? products : new ArrayList<>();
     }
 
     public Long getId() {
@@ -115,6 +121,14 @@ public class User {
         this.role = role;
     }
 
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
     public static UserBuilder builder() {
         return new UserBuilder();
     }
@@ -126,8 +140,9 @@ public class User {
         private String password;
         private String fullName;
         private String images;
-        private boolean enabled = true;
+        private boolean enabled = false;
         private Role role;
+        private List<Product> products = new ArrayList<>();
 
         public UserBuilder id(Long id) {
             this.id = id;
@@ -169,8 +184,13 @@ public class User {
             return this;
         }
 
+        public UserBuilder products(List<Product> products) {
+            this.products = products;
+            return this;
+        }
+
         public User build() {
-            return new User(id, username, email, password, fullName, images, enabled, role);
+            return new User(id, username, email, password, fullName, images, enabled, role, products);
         }
     }
 }

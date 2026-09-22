@@ -1,65 +1,22 @@
 <!DOCTYPE html>
-<html lang="vi"
-      xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
-<header th:fragment="header" class="topbar">
-    <div class="brand">
-        <a th:href="@{/}">
-            UTEShop
-        </a>
-    </div>
-
-    <nav style="display:flex; align-items:center; justify-content:space-between; width:100%;">
-        <div>
-            <a th:href="@{/}" style="color:#fff; text-decoration:none; margin-right:15px;">Trang chủ</a>
-        </div>
-
-        <div class="account" th:if="${#authorization.expression('isAuthenticated()')}">
-            <!-- Avatar -->
-            <img th:src="${#authentication.principal.images != null and !#strings.isEmpty(#authentication.principal.images) ? #authentication.principal.images : '/images/avatar-default.png'}"
-                 alt="Avatar"
-                 width="40"
-                 height="40"
-                 style="border-radius:50%; object-fit:cover; vertical-align:middle; margin-right:8px;">
-
-            <!-- Full name -->
-            <span style="font-weight:600; margin-right:6px;"
-                  th:text="${#authentication.principal.fullName}">
-                Nguyễn Văn A
-            </span>
-
-            <!-- Username -->
-            <span style="color:#cbd5e1; margin-right:6px;"
-                  th:text="'(' + ${#authentication.principal.username} + ')'">
-                (nguyenvana)
-            </span>
-
-            <!-- Email -->
-            <span style="color:#cbd5e1; margin-right:6px;"
-                  th:text="${#authentication.principal.email}">
-                email@gmail.com
-            </span>
-
-            <!-- Role -->
-            <span class="btn small secondary" style="margin-right:10px;"
-                  th:text="${#authentication.principal.role}">
-                ROLE_USER
-            </span>
-
-            <!-- Logout -->
-            <form th:action="@{/logout}" method="post" style="display:inline">
-                <button class="btn danger small" type="submit">
-                    Đăng xuất
-                </button>
-            </form>
-        </div>
-
-        <div th:unless="${#authorization.expression('isAuthenticated()')}">
-            <a class="btn primary small" th:href="@{/login}">
-                Đăng nhập
-            </a>
-        </div>
+<header th:fragment="header" class="header">
+    <a th:href="@{/}" class="brand">IOTSTAR SHOP</a>
+    <nav>
+        <a th:href="@{/}">Dashboard</a>
+        <a th:href="@{/products}">Products</a>
+        <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" th:href="@{/users}">Users</a>
     </nav>
+    <div class="account" th:if="${#authorization.expression('isAuthenticated()')}">
+        <span th:text="${#authentication.name}"></span>
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <button type="submit" class="link-button">Logout</button>
+        </form>
+    </div>
+    <div th:unless="${#authorization.expression('isAuthenticated()')}">
+        <a th:href="@{/login}">Login</a>
+    </div>
 </header>
 </body>
 </html>

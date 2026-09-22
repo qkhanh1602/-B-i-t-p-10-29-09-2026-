@@ -1,25 +1,36 @@
 package vn.iotstar.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 public class UserDTO {
     private Long id;
+
+    @NotBlank(message = "Username không được để trống")
     private String username;
+
+    @NotBlank(message = "Email không được để trống")
+    @Email(message = "Email không hợp lệ")
     private String email;
+
+    @NotBlank(message = "Họ tên không được để trống")
     private String fullName;
-    private String images;
-    private String roleName;
+
     private boolean enabled;
+    private String roleName;
+    private long productCount;
 
     public UserDTO() {
     }
 
-    public UserDTO(Long id, String username, String email, String fullName, String images, String roleName, boolean enabled) {
+    public UserDTO(Long id, String username, String email, String fullName, boolean enabled, String roleName, long productCount) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.fullName = fullName;
-        this.images = images;
-        this.roleName = roleName;
         this.enabled = enabled;
+        this.roleName = roleName;
+        this.productCount = productCount;
     }
 
     public Long getId() {
@@ -54,12 +65,12 @@ public class UserDTO {
         this.fullName = fullName;
     }
 
-    public String getImages() {
-        return images;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setImages(String images) {
-        this.images = images;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public String getRoleName() {
@@ -70,12 +81,12 @@ public class UserDTO {
         this.roleName = roleName;
     }
 
-    public boolean isEnabled() {
-        return enabled;
+    public long getProductCount() {
+        return productCount;
     }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public void setProductCount(long productCount) {
+        this.productCount = productCount;
     }
 
     public static UserDTOBuilder builder() {
@@ -87,9 +98,9 @@ public class UserDTO {
         private String username;
         private String email;
         private String fullName;
-        private String images;
-        private String roleName;
         private boolean enabled;
+        private String roleName;
+        private long productCount;
 
         public UserDTOBuilder id(Long id) {
             this.id = id;
@@ -111,8 +122,8 @@ public class UserDTO {
             return this;
         }
 
-        public UserDTOBuilder images(String images) {
-            this.images = images;
+        public UserDTOBuilder enabled(boolean enabled) {
+            this.enabled = enabled;
             return this;
         }
 
@@ -121,13 +132,13 @@ public class UserDTO {
             return this;
         }
 
-        public UserDTOBuilder enabled(boolean enabled) {
-            this.enabled = enabled;
+        public UserDTOBuilder productCount(long productCount) {
+            this.productCount = productCount;
             return this;
         }
 
         public UserDTO build() {
-            return new UserDTO(id, username, email, fullName, images, roleName, enabled);
+            return new UserDTO(id, username, email, fullName, enabled, roleName, productCount);
         }
     }
 }
